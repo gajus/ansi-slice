@@ -1,6 +1,6 @@
 {
   "name": "ansi-slice",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Extracts a section of a string containing ANSI escape codes.",
   "main": "./dist/index.js",
   "author": {
