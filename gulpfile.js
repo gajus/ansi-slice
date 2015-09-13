@@ -6,10 +6,10 @@ import gutil from 'gulp-util';
 import sourcemaps from 'gulp-sourcemaps';
 import glob from 'globby';
 
-import {
+/* import {
     lintFiles,
     getPrinter
-} from 'canonical';
+} from 'canonical'; */
 
 gulp.task('lint', () => {
     return;
