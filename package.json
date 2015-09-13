@@ -23,6 +23,7 @@
     "watch": "babel-node ./node_modules/.bin/gulp watch"
   },
   "devDependencies": {
+    "babel": "^5.8.23",
     "canonical": "^1.0.1",
     "chai": "^3.2.0",
     "chalk": "^1.1.1",
