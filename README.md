@@ -22,6 +22,6 @@ subject = "\u001b[31mfoo\u001b[39m\u001b[34mbar\u001b[39mbaz";
  */
 subject = slice(subject, 2, -2);
 
-console.log(JSON.stringify(subject));
+console.log(subject);
 // "\u001b[31mo\u001b[39m\u001b[34mbar\u001b[39mb\u001b[39m"
 ```
