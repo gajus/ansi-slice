@@ -60,7 +60,7 @@ describe(`slice`, () => {
             });
         });
     });
-    context(`string using a single two ANSI escape code (red and blue)`, () => {
+    context(`string using two ANSI escape codes (red and blue)`, () => {
         let subject;
 
         beforeEach(() => {
@@ -80,6 +80,11 @@ describe(`slice`, () => {
 
                 expect(subject).to.equal(chalk.red(`c`) + chalk.blue(`d`));
             });
+        });
+    });
+    context(`string ending with an ANSI escape code`, () => {
+        it(`strips the code from the end of the string`, () => {
+            expect(slice(`${chalk.styles.red.open}test${chalk.styles.red.open}`)).to.equal(`${chalk.styles.red.open}test\u001b[39m`);
         });
     });
 });

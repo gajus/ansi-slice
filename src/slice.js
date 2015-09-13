@@ -1,6 +1,13 @@
 import stripANSI from 'strip-ansi';
-import mapANSIEscapeCodes from './mapANSIEscapeCodes';
 import splice from 'splice-string';
+import ANSIRegexFactory from 'ansi-regex';
+
+import mapANSIEscapeCodes from './mapANSIEscapeCodes';
+import trim from './trim';
+
+let ANSIRegex;
+
+ANSIRegex = ANSIRegexFactory();
 
 /**
  * @param {String} subject
@@ -8,14 +15,16 @@ import splice from 'splice-string';
  * @param {Number} endSlice Optional. The zero-based index at which to end extraction.
  * @return {String}
  */
-export default (subject, beginSlice, endSlice) => {
+export default (subject, beginSlice = 0, endSlice) => {
     let ANSIEscapeCodeMap,
         ReverseANSIEscapeCodeMap,
-        lastEscapeCode,
         noNegative,
         offsetSlicedSubjectLength,
         plainSubject,
-        slicedSubject;
+        slicedSubject,
+        mappedEscapeCodes;
+
+    mappedEscapeCodes = false;
 
     if (typeof subject !== `string`) {
         throw new Error(`ansi-slice subject must be a string.`);
@@ -50,6 +59,8 @@ export default (subject, beginSlice, endSlice) => {
             return;
         }
 
+        mappedEscapeCodes = true;
+
         offsetIndex = escapeCode.index - beginSlice;
 
         if (offsetIndex <= 0) {
@@ -72,9 +83,8 @@ export default (subject, beginSlice, endSlice) => {
         slicedSubject = splice(slicedSubject, offsetIndex, 0, escapeCode.code);
     });
 
-    // This logic is specific to https://github.com/chalk/chalk implementation.
-    // `chalk` ends every string with `\u001b[31m`.
-    if (lastEscapeCode !== `\u001b[39m` && ReverseANSIEscapeCodeMap.length && ReverseANSIEscapeCodeMap[0].code === `\u001b[39m`) {
+    if (mappedEscapeCodes) {
+        slicedSubject = trim(slicedSubject, new RegExp(`${ANSIRegex.source}\$`));
         slicedSubject += `\u001b[39m`;
     }
 

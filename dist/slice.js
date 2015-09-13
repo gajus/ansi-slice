@@ -10,13 +10,25 @@ var _stripAnsi = require('strip-ansi');
 
 var _stripAnsi2 = _interopRequireDefault(_stripAnsi);
 
+var _spliceString = require('splice-string');
+
+var _spliceString2 = _interopRequireDefault(_spliceString);
+
+var _ansiRegex = require('ansi-regex');
+
+var _ansiRegex2 = _interopRequireDefault(_ansiRegex);
+
 var _mapANSIEscapeCodes = require('./mapANSIEscapeCodes');
 
 var _mapANSIEscapeCodes2 = _interopRequireDefault(_mapANSIEscapeCodes);
 
-var _spliceString = require('splice-string');
+var _trim = require('./trim');
 
-var _spliceString2 = _interopRequireDefault(_spliceString);
+var _trim2 = _interopRequireDefault(_trim);
+
+var ANSIRegex = undefined;
+
+ANSIRegex = (0, _ansiRegex2['default'])();
 
 /**
  * @param {String} subject
@@ -26,13 +38,17 @@ var _spliceString2 = _interopRequireDefault(_spliceString);
  */
 
 exports['default'] = function (subject, beginSlice, endSlice) {
+    if (beginSlice === undefined) beginSlice = 0;
+
     var ANSIEscapeCodeMap = undefined,
         ReverseANSIEscapeCodeMap = undefined,
-        lastEscapeCode = undefined,
         noNegative = undefined,
         offsetSlicedSubjectLength = undefined,
         plainSubject = undefined,
-        slicedSubject = undefined;
+        slicedSubject = undefined,
+        mappedEscapeCodes = undefined;
+
+    mappedEscapeCodes = false;
 
     if (typeof subject !== 'string') {
         throw new Error('ansi-slice subject must be a string.');
@@ -67,6 +83,8 @@ exports['default'] = function (subject, beginSlice, endSlice) {
             return;
         }
 
+        mappedEscapeCodes = true;
+
         offsetIndex = escapeCode.index - beginSlice;
 
         if (offsetIndex <= 0) {
@@ -89,9 +107,8 @@ exports['default'] = function (subject, beginSlice, endSlice) {
         slicedSubject = (0, _spliceString2['default'])(slicedSubject, offsetIndex, 0, escapeCode.code);
     });
 
-    // This logic is specific to https://github.com/chalk/chalk implementation.
-    // `chalk` ends every string with `\u001b[31m`.
-    if (lastEscapeCode !== '\u001b[39m' && ReverseANSIEscapeCodeMap.length && ReverseANSIEscapeCodeMap[0].code === '\u001b[39m') {
+    if (mappedEscapeCodes) {
+        slicedSubject = (0, _trim2['default'])(slicedSubject, new RegExp(ANSIRegex.source + '$'));
         slicedSubject += '\u001b[39m';
     }
 
