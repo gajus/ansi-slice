@@ -19,26 +19,30 @@ var _spliceString = require('splice-string');
 var _spliceString2 = _interopRequireDefault(_spliceString);
 
 /**
- * @param {String} input
+ * @param {String} subject
  * @param {Number} beginSlice The zero-based index at which to begin extraction.
  * @param {Number} endSlice Optional. The zero-based index at which to end extraction.
  * @return {String}
  */
 
-exports['default'] = function (input, beginSlice, endSlice) {
+exports['default'] = function (subject, beginSlice, endSlice) {
     var ANSIEscapeCodeMap = undefined,
         ReverseANSIEscapeCodeMap = undefined,
         lastEscapeCode = undefined,
         noNegative = undefined,
-        offsetSlicedInputLength = undefined,
-        plainInput = undefined,
-        slicedInput = undefined;
+        offsetSlicedSubjectLength = undefined,
+        plainSubject = undefined,
+        slicedSubject = undefined;
 
-    plainInput = (0, _stripAnsi2['default'])(input);
+    if (typeof subject !== 'string') {
+        throw new Error('ansi-slice subject must be a string.');
+    }
 
-    // console.log(`plainInput`, plainInput);
+    plainSubject = (0, _stripAnsi2['default'])(subject);
 
-    ANSIEscapeCodeMap = (0, _mapANSIEscapeCodes2['default'])(input);
+    // console.log(`plainSubject`, plainSubject);
+
+    ANSIEscapeCodeMap = (0, _mapANSIEscapeCodes2['default'])(subject);
 
     // console.log(`ANSIEscapeCodeMap`, ANSIEscapeCodeMap);
 
@@ -46,20 +50,20 @@ exports['default'] = function (input, beginSlice, endSlice) {
 
     // console.log(`\nReverseANSIEscapeCodeMap:\n\n`, ReverseANSIEscapeCodeMap, `\n`);
 
-    slicedInput = plainInput.slice(beginSlice, endSlice);
+    slicedSubject = plainSubject.slice(beginSlice, endSlice);
 
-    // console.log(`slicedInput`, slicedInput);
+    // console.log(`slicedSubject`, slicedSubject);
 
-    offsetSlicedInputLength = beginSlice + slicedInput.length;
+    offsetSlicedSubjectLength = beginSlice + slicedSubject.length;
 
-    // console.log(`slicedInputLength`, offsetSlicedInputLength);
+    // console.log(`offsetSlicedSubjectLength`, offsetSlicedSubjectLength);
 
     noNegative = true;
 
     ReverseANSIEscapeCodeMap.forEach(function (escapeCode) {
         var offsetIndex = undefined;
 
-        if (escapeCode.index > offsetSlicedInputLength) {
+        if (escapeCode.index > offsetSlicedSubjectLength) {
             return;
         }
 
@@ -82,16 +86,16 @@ exports['default'] = function (input, beginSlice, endSlice) {
 
         // console.log(`escapeCode`, JSON.stringify(escapeCode));
 
-        slicedInput = (0, _spliceString2['default'])(slicedInput, offsetIndex, 0, escapeCode.code);
+        slicedSubject = (0, _spliceString2['default'])(slicedSubject, offsetIndex, 0, escapeCode.code);
     });
 
     // This logic is specific to https://github.com/chalk/chalk implementation.
     // `chalk` ends every string with `\u001b[31m`.
     if (lastEscapeCode !== '\u001b[39m' && ReverseANSIEscapeCodeMap.length && ReverseANSIEscapeCodeMap[0].code === '\u001b[39m') {
-        slicedInput += '\u001b[39m';
+        slicedSubject += '\u001b[39m';
     }
 
-    return slicedInput;
+    return slicedSubject;
 };
 
 module.exports = exports['default'];

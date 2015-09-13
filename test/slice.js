@@ -9,6 +9,13 @@ import chalk from 'chalk';
 import slice from './../src/slice';
 
 describe(`slice`, () => {
+    context(`subject is not a string`, () => {
+        it(`throws an error`, () => {
+            expect(() => {
+                slice();
+            }).to.throw(Error, `ansi-slice subject must be a string.`);
+        });
+    });
     context(`string without ANSI escape codes`, () => {
         let subject;
 

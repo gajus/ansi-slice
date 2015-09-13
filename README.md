@@ -15,7 +15,7 @@ let subject;
 subject = "\u001b[31mfoo\u001b[39m\u001b[34mbar\u001b[39mbaz";
 
 /**
- * @param {String} input
+ * @param {String} subject
  * @param {Number} beginSlice The zero-based index at which to begin extraction.
  * @param {Number} endSlice Optional. The zero-based index at which to end extraction.
  * @return {String}
