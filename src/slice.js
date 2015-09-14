@@ -63,7 +63,9 @@ export default (subject, beginSlice = 0, endSlice) => {
 
         offsetIndex = escapeCode.index - beginSlice;
 
-        if (offsetIndex <= 0) {
+        if (offsetIndex < 0) {
+            // console.log(`offsetIndex`, offsetIndex);
+
             if (!noNegative) {
                 return;
             }

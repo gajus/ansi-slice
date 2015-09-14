@@ -91,7 +91,9 @@ exports['default'] = function (subject, beginSlice, endSlice) {
 
         offsetIndex = escapeCode.index - beginSlice;
 
-        if (offsetIndex <= 0) {
+        if (offsetIndex < 0) {
+            // console.log(`offsetIndex`, offsetIndex);
+
             if (!noNegative) {
                 return;
             }

@@ -75,6 +75,21 @@ describe(`slice`, () => {
             });
         });
     });
+    context(`string using multiple ANSI escape codes (color:red and bgColor:blue)`, () => {
+        let subject;
+
+        beforeEach(() => {
+            subject = chalk.red.bgBlue(`abcd`);
+        });
+
+        context(`extracting first 2 charactrs`, () => {
+            it(`extracts 2 characters of the string`, () => {
+                subject = slice(subject, 0, 2);
+
+                expectEqualTrimRight(subject, chalk.red.bgBlue(`ab`));
+            });
+        });
+    });
     context(`string using two ANSI escape codes (color:red and color:blue)`, () => {
         let subject;
 
