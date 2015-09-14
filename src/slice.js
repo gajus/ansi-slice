@@ -1,9 +1,9 @@
 import stripANSI from 'strip-ansi';
 import splice from 'splice-string';
 import ANSIRegexFactory from 'ansi-regex';
-
 import mapANSIEscapeCodes from './mapANSIEscapeCodes';
 import trim from './trim';
+import close from './close';
 
 let ANSIRegex;
 
@@ -85,7 +85,8 @@ export default (subject, beginSlice = 0, endSlice) => {
 
     if (mappedEscapeCodes) {
         slicedSubject = trim(slicedSubject, new RegExp(`${ANSIRegex.source}\$`));
-        slicedSubject += `\u001b[39m`;
+        slicedSubject += close();
+        // slicedSubject += `\u001b[39m`;
     }
 
     return slicedSubject;

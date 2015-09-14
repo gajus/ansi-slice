@@ -26,6 +26,10 @@ var _trim = require('./trim');
 
 var _trim2 = _interopRequireDefault(_trim);
 
+var _close = require('./close');
+
+var _close2 = _interopRequireDefault(_close);
+
 var ANSIRegex = undefined;
 
 ANSIRegex = (0, _ansiRegex2['default'])();
@@ -109,7 +113,8 @@ exports['default'] = function (subject, beginSlice, endSlice) {
 
     if (mappedEscapeCodes) {
         slicedSubject = (0, _trim2['default'])(slicedSubject, new RegExp(ANSIRegex.source + '$'));
-        slicedSubject += '\u001b[39m';
+        slicedSubject += (0, _close2['default'])();
+        // slicedSubject += `\u001b[39m`;
     }
 
     return slicedSubject;

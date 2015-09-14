@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "ansi-regex": "^2.0.0",
+    "lodash": "^3.10.1",
     "splice-string": "^1.0.0",
     "strip-ansi": "^3.0.0"
   }
