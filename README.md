@@ -4,6 +4,12 @@
 [![NPM version](http://img.shields.io/npm/v/ansi-slice.svg?style=flat)](https://www.npmjs.com/package/ansi-slice)
 [![js-canonical-style](https://img.shields.io/badge/code%20style-canonical-brightgreen.svg?style=flat)](https://github.com/gajus/canonical)
 
+## Deprecated
+
+This package has been deprecated in favor of [`slice-ansi`](https://github.com/chalk/slice-ansi).
+
+## ansi-slice
+
 Extracts a section of a string containing ANSI escape codes.
 
 ```js
